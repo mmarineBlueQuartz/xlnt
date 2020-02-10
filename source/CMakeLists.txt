@@ -151,7 +151,7 @@ set(XLNT_BIN_DEST_DIR ${CMAKE_INSTALL_BINDIR}
 	CACHE PATH "Default location to install runtime files")
 set(XLNT_MAN_DEST_DIR ${CMAKE_INSTALL_MANDIR}
 	CACHE PATH "Default location to install runtime files")
-set(XLNT_CMAKE_CFG_DEST_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+set(XLNT_CMAKE_CFG_DEST_DIR ${CMAKE_INSTALL_PREFIX}/cmake/${PROJECT_NAME}
 	CACHE PATH "Default location to install CMake config files")
 
 if(NOT STATIC)
@@ -255,7 +255,11 @@ install(EXPORT XlntTargets
 
 include(CMakePackageConfigHelpers)
 
-set(XLNT_INCLUDE_INSTALL_DIR ${XLNT_INC_DEST_DIR})
+if(IS_ABSOLUTE ${XLNT_INC_DEST_DIR})
+  set(XLNT_INCLUDE_INSTALL_DIR ${XLNT_INC_DEST_DIR})
+else()
+  set(XLNT_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/${XLNT_INC_DEST_DIR}")
+endif()
 
 #See https://cmake.org/cmake/help/latest/module/CMakePackageConfigHelpers.html
 configure_package_config_file(../cmake/XlntConfig.cmake.in
